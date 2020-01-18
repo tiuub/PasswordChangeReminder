@@ -20,14 +20,14 @@ To set up a reminder, you have to activate the reminder in the "Advanced"-Tab of
 
 For this, you have to choose the entry, you want to get remind for:
 - Advanced -> Check the Box -> Choose the reminder interval 
-![Configuration Example](screenshot-2.png)
+![Configuration Example](screenshot-2.PNG)
 
 
 After you the configuration, you can see a overview by clicking 
 - Tools -> Password Change Reminder. 
 
 Otherwise you can activate the function, "Automatically remind on startup", which will remind you for changing matured passwords on startup, if there is one.
-![Overview Example](screenshot-1.png)
+![Overview Example](screenshot-1.PNG)
 
 
 
