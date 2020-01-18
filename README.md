@@ -23,10 +23,12 @@ For this, you have to choose the entry, you want to get remind for:
 ![Configuration Example](screenshot-2.PNG)
 
 
+
 After you the configuration, you can see a overview by clicking 
 - Tools -> Password Change Reminder. 
 
 Otherwise you can activate the function, "Automatically remind on startup", which will remind you for changing matured passwords on startup, if there is one.
+
 ![Overview Example](screenshot-1.PNG)
 
 
