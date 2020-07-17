@@ -61,11 +61,29 @@ namespace PasswordChangeReminder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Check for matured passwords on startup and remind?.
+        ///   Looks up a localized string similar to Created.
         /// </summary>
-        internal static string pcr_form_cbCheckStartup {
+        internal static string pcr_created {
             get {
-                return ResourceManager.GetString("pcr_form_cbCheckStartup", resourceCulture);
+                return ResourceManager.GetString("pcr_created", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to days.
+        /// </summary>
+        internal static string pcr_days {
+            get {
+                return ResourceManager.GetString("pcr_days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Donate.
+        /// </summary>
+        internal static string pcr_donate {
+            get {
+                return ResourceManager.GetString("pcr_donate", resourceCulture);
             }
         }
         
@@ -79,16 +97,7 @@ namespace PasswordChangeReminder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to days.
-        /// </summary>
-        internal static string pcr_form_days {
-            get {
-                return ResourceManager.GetString("pcr_form_days", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Here are listed the passwords you set and when they are due to renew:.
+        ///   Looks up a localized string similar to Here are listed your renewable passwords and when they due to renew:.
         /// </summary>
         internal static string pcr_form_lb_description {
             get {
@@ -133,11 +142,20 @@ namespace PasswordChangeReminder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Today.
+        ///   Looks up a localized string similar to Last Modified.
         /// </summary>
-        internal static string pcr_form_today {
+        internal static string pcr_last_modified {
             get {
-                return ResourceManager.GetString("pcr_form_today", resourceCulture);
+                return ResourceManager.GetString("pcr_last_modified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nothing.
+        /// </summary>
+        internal static string pcr_nothing {
+            get {
+                return ResourceManager.GetString("pcr_nothing", resourceCulture);
             }
         }
         
@@ -156,6 +174,141 @@ namespace PasswordChangeReminder.Properties {
         internal static string pcr_pwentry_cb_remind {
             get {
                 return ResourceManager.GetString("pcr_pwentry_cb_remind", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string pcr_settings {
+            get {
+                return ResourceManager.GetString("pcr_settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Check for matrued passwords at startup?.
+        /// </summary>
+        internal static string pcr_settings_form_check_startup {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_check_startup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remind on startup, if password is expiring in (... days):.
+        /// </summary>
+        internal static string pcr_settings_form_check_startup_days {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_check_startup_days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Color Options.
+        /// </summary>
+        internal static string pcr_settings_form_color_options {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_color_options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Critical State:.
+        /// </summary>
+        internal static string pcr_settings_form_critical_state {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_critical_state", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set color to critical color, if pasword is expiring in (... days):.
+        /// </summary>
+        internal static string pcr_settings_form_critical_state_days {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_critical_state_days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Expiring Options.
+        /// </summary>
+        internal static string pcr_settings_form_expiring_options {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_expiring_options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Great State:.
+        /// </summary>
+        internal static string pcr_settings_form_great_state {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_great_state", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reset.
+        /// </summary>
+        internal static string pcr_settings_form_reset {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_reset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        internal static string pcr_settings_form_save {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Startup Options.
+        /// </summary>
+        internal static string pcr_settings_form_startup_options {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_startup_options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tentative State:.
+        /// </summary>
+        internal static string pcr_settings_form_tentative_state {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_tentative_state", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Set color to tentative color, if pasword is expiring in (... days):.
+        /// </summary>
+        internal static string pcr_settings_form_tentative_state_days {
+            get {
+                return ResourceManager.GetString("pcr_settings_form_tentative_state_days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Soon.
+        /// </summary>
+        internal static string pcr_soon {
+            get {
+                return ResourceManager.GetString("pcr_soon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Today.
+        /// </summary>
+        internal static string pcr_today {
+            get {
+                return ResourceManager.GetString("pcr_today", resourceCulture);
             }
         }
     }

@@ -117,17 +117,20 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="pcr_form_cbCheckStartup" xml:space="preserve">
-    <value>Check for matured passwords on startup and remind?</value>
+  <data name="pcr_created" xml:space="preserve">
+    <value>Created</value>
+  </data>
+  <data name="pcr_days" xml:space="preserve">
+    <value>days</value>
+  </data>
+  <data name="pcr_donate" xml:space="preserve">
+    <value>Donate</value>
   </data>
   <data name="pcr_form_close" xml:space="preserve">
     <value>Close</value>
   </data>
-  <data name="pcr_form_days" xml:space="preserve">
-    <value>days</value>
-  </data>
   <data name="pcr_form_lb_description" xml:space="preserve">
-    <value>Here are listed the passwords you set and when they are due to renew:</value>
+    <value>Here are listed your renewable passwords and when they due to renew:</value>
   </data>
   <data name="pcr_form_lv_age" xml:space="preserve">
     <value>Password Age</value>
@@ -141,13 +144,61 @@
   <data name="pcr_form_lv_remindevery" xml:space="preserve">
     <value>Remind every</value>
   </data>
-  <data name="pcr_form_today" xml:space="preserve">
-    <value>Today</value>
+  <data name="pcr_last_modified" xml:space="preserve">
+    <value>Last Modified</value>
+  </data>
+  <data name="pcr_nothing" xml:space="preserve">
+    <value>Nothing</value>
   </data>
   <data name="pcr_plugin_name" xml:space="preserve">
     <value>Password Change Reminder</value>
   </data>
   <data name="pcr_pwentry_cb_remind" xml:space="preserve">
     <value>Remind changing password every (in days):</value>
+  </data>
+  <data name="pcr_settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="pcr_settings_form_check_startup" xml:space="preserve">
+    <value>Check for matrued passwords at startup?</value>
+  </data>
+  <data name="pcr_settings_form_check_startup_days" xml:space="preserve">
+    <value>Remind on startup, if password is expiring in (... days):</value>
+  </data>
+  <data name="pcr_settings_form_color_options" xml:space="preserve">
+    <value>Color Options</value>
+  </data>
+  <data name="pcr_settings_form_critical_state" xml:space="preserve">
+    <value>Critical State:</value>
+  </data>
+  <data name="pcr_settings_form_critical_state_days" xml:space="preserve">
+    <value>Set color to critical color, if pasword is expiring in (... days):</value>
+  </data>
+  <data name="pcr_settings_form_expiring_options" xml:space="preserve">
+    <value>Expiring Options</value>
+  </data>
+  <data name="pcr_settings_form_great_state" xml:space="preserve">
+    <value>Great State:</value>
+  </data>
+  <data name="pcr_settings_form_reset" xml:space="preserve">
+    <value>Reset</value>
+  </data>
+  <data name="pcr_settings_form_save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="pcr_settings_form_startup_options" xml:space="preserve">
+    <value>Startup Options</value>
+  </data>
+  <data name="pcr_settings_form_tentative_state" xml:space="preserve">
+    <value>Tentative State:</value>
+  </data>
+  <data name="pcr_settings_form_tentative_state_days" xml:space="preserve">
+    <value>Set color to tentative color, if pasword is expiring in (... days):</value>
+  </data>
+  <data name="pcr_soon" xml:space="preserve">
+    <value>Soon</value>
+  </data>
+  <data name="pcr_today" xml:space="preserve">
+    <value>Today</value>
   </data>
 </root>

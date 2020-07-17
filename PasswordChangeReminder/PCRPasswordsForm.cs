@@ -19,6 +19,7 @@ namespace PasswordChangeReminder
 {
     public partial class PCRPasswordsForm : Form
     {
+        private PwObjectList<PwEntry> pwObjectList = null;
         private PwDatabase pdb = null;
         private ImageList il_icons = null;
         private PCRConfig m_config = null;
@@ -37,16 +38,25 @@ namespace PasswordChangeReminder
             this.il_icons = il_icons;
             this.pdb = pdb;
             this.m_config = m_config;
+            this.pwObjectList = pwObjectList;
 
             if (m_config != null)
             {
-                cbCheckStartup.Checked = m_config.checkOnStartup;
                 this.Height = m_config.pcrPasswordsFormHeight;
             }
 
             lvExpiringPasswords.SmallImageList = il_icons;
 
             populateExpiringEntries(pwObjectList);
+        }
+
+        private void PCR_Form_Load(object sender, EventArgs e)
+        {
+            if (m_host != null)
+            {
+                this.Left = m_host.MainWindow.Left + 20;
+                this.Top = m_host.MainWindow.Top + 20;
+            }
         }
 
         private void buildListView()
@@ -59,62 +69,63 @@ namespace PasswordChangeReminder
             ListSorter lsListSorter = new ListSorter(1, SortOrder.Ascending, true, false);
             lvExpiringPasswords.ListViewItemSorter = lsListSorter;
 
-            ListViewGroup lvgListViewGroup = new ListViewGroup("Today");
+            ListViewGroup lvgListViewGroup = new ListViewGroup(Properties.strings.pcr_today);
             lvExpiringPasswords.Groups.Add(lvgListViewGroup);
-            //lvgListViewGroup = new ListViewGroup("Soon (>5days)");
-            //lvExpiringPasswords.Groups.Add(lvgListViewGroup);
-            lvgListViewGroup = new ListViewGroup("Soon");
+            lvgListViewGroup = new ListViewGroup(Properties.strings.pcr_soon);
             lvExpiringPasswords.Groups.Add(lvgListViewGroup);
         }
 
 
         private void populateExpiringEntries(PwObjectList<PwEntry> pwObjectList)
         {
-            foreach (PwEntry pe in pwObjectList)
-            {
-                if (pe.Strings.Exists(PasswordChangeReminderExt._EntryStringKey))
+            if (pwObjectList.Count() > 0)
+                foreach (PwEntry pe in pwObjectList)
                 {
-                    PwListItem pli = new PwListItem(pe);
-                    int iRemindIn = Convert.ToInt32(pe.Strings.Get(PasswordChangeReminderExt._EntryStringKey).ReadString().ToString());
-                    int iPwAge = Tools.calculateAge(pe);
-                    int iChangeIn = iRemindIn - iPwAge;
-
-                    ListViewItem lvi = lvExpiringPasswords.Items.Add(pe.Strings.ReadSafe(PwDefs.TitleField));
-                    lvi.UseItemStyleForSubItems = false;
-
-                    if (iChangeIn > 5)
+                    if (pe.Strings.Exists(PasswordChangeReminderExt._EntryStringKey))
                     {
-                        lvi.SubItems.Add(iChangeIn + " " + Properties.strings.pcr_form_days).BackColor = Color.LightGreen;
-                        lvi.Group = lvExpiringPasswords.Groups[1];
-                        lvi.BackColor = Color.LightGreen;
-                    }
-                    else if (iChangeIn > 0)
-                    {
-                        lvi.SubItems.Add(iChangeIn + " " + Properties.strings.pcr_form_days).BackColor = Color.LightGoldenrodYellow;
-                        lvi.Group = lvExpiringPasswords.Groups[1];
-                        lvi.BackColor = Color.LightGoldenrodYellow;
-                        lvExpiringPasswords.ShowGroups = true;
-                    }
-                    else
-                    {
-                        lvi.SubItems.Add(Properties.strings.pcr_form_today + " (" + iChangeIn + Properties.strings.pcr_form_days + ")").BackColor = Color.LightSalmon;
-                        lvi.Group = lvExpiringPasswords.Groups[0];
-                        lvi.BackColor = Color.LightSalmon;
-                        lvExpiringPasswords.ShowGroups = true;
-                    }
+                        PwListItem pli = new PwListItem(pe);
+                        int iRemindIn = Convert.ToInt32(pe.Strings.Get(PasswordChangeReminderExt._EntryStringKey).ReadString().ToString());
+                        int iPwAge = Tools.calculateAge(pe);
+                        int iChangeIn = iRemindIn - iPwAge;
 
-                    lvi.SubItems.Add(iPwAge + " " + Properties.strings.pcr_form_days).BackColor = Color.LightGray;
-                    lvi.SubItems.Add(iRemindIn + " " + Properties.strings.pcr_form_days).BackColor = Color.LightGray;
-                    lvi.ToolTipText = "Created: " + pe.CreationTime + "\r\nLast Modified: " + pe.LastModificationTime; 
-                    lvi.Tag = pli;
+                        ListViewItem lvi = lvExpiringPasswords.Items.Add(pe.Strings.ReadSafe(PwDefs.TitleField));
+                        lvi.UseItemStyleForSubItems = false;
+
+                        if (iChangeIn > m_config.pcrPasswordsFormTentativeState)
+                        {
+                            lvi.SubItems.Add(iChangeIn + " " + Properties.strings.pcr_days).BackColor = m_config.pcrPasswordsFormGreatColor;
+                            lvi.Group = lvExpiringPasswords.Groups[1];
+                            lvi.BackColor = m_config.pcrPasswordsFormGreatColor;
+                        }
+                        else if (iChangeIn > m_config.pcrPasswordsFormCriticalState)
+                        {
+                            lvi.SubItems.Add(iChangeIn + " " + Properties.strings.pcr_days).BackColor = m_config.pcrPasswordsFormTentativeColor;
+                            lvi.Group = lvExpiringPasswords.Groups[1];
+                            lvi.BackColor = m_config.pcrPasswordsFormTentativeColor;
+                            lvExpiringPasswords.ShowGroups = true;
+                        }
+                        else
+                        {
+                            lvi.SubItems.Add(Properties.strings.pcr_today + " (" + iChangeIn + Properties.strings.pcr_days + ")").BackColor = m_config.pcrPasswordsFormCriticalColor;
+                            lvi.Group = lvExpiringPasswords.Groups[0];
+                            lvi.BackColor = m_config.pcrPasswordsFormCriticalColor;
+                            lvExpiringPasswords.ShowGroups = true;
+                        }
+
+                        lvi.SubItems.Add(iPwAge + " " + Properties.strings.pcr_days).BackColor = Color.LightGray;
+                        lvi.SubItems.Add(iRemindIn + " " + Properties.strings.pcr_days).BackColor = Color.LightGray;
+                        lvi.ToolTipText = Properties.strings.pcr_created + ": " + pe.CreationTime + "\r\n" + Properties.strings.pcr_last_modified + ": " + pe.LastModificationTime; 
+                        lvi.Tag = pli;
 
                     
-                    if (pe.CustomIconUuid.Equals(PwUuid.Zero))
-                        lvi.ImageIndex = (int)pe.IconId;
-                    else
-                        lvi.ImageIndex = (int)PwIcon.Count + pdb.GetCustomIconIndex(pe.CustomIconUuid);
+                        if (pe.CustomIconUuid.Equals(PwUuid.Zero))
+                            lvi.ImageIndex = (int)pe.IconId;
+                        else
+                            lvi.ImageIndex = (int)PwIcon.Count + pdb.GetCustomIconIndex(pe.CustomIconUuid);
+                    }
                 }
-            }
+            else
+                lvExpiringPasswords.Items.Add(Properties.strings.pcr_nothing + "...");
         }
 
         private void lvExpiringPasswordsItem_onDoubleClick(object sender, MouseEventArgs e)
@@ -124,8 +135,6 @@ namespace PasswordChangeReminder
             PwListItem pli = (lvi.Tag as PwListItem);
             PwEntry pe = pli.Entry;
             if (pe == null || pdb == null || il_icons == null) return; // Do not assert
-            pe.CreationTime = DateTime.Parse("20.12.2019");
-            pe.LastModificationTime = DateTime.Parse("20.12.2019");
             this.Close();
 
             PwDatabase pwDb = pdb;
@@ -154,20 +163,8 @@ namespace PasswordChangeReminder
             this.Close();
         }
 
-        private void cbCheckStartup_CheckedChanged(object sender, EventArgs e)
-        {
-            if (m_config != null)
-                m_config.checkOnStartup = cbCheckStartup.Checked;
-        }
 
-        private void PCR_Form_Load(object sender, EventArgs e)
-        {
-            if (m_host != null)
-            {
-                this.Left = m_host.MainWindow.Left + 20;
-                this.Top = m_host.MainWindow.Top + 20;
-            }
-        }
+
 
         private void lvExpiringPasswords_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -216,6 +213,22 @@ namespace PasswordChangeReminder
         {
             if (m_config != null)
                 m_config.pcrPasswordsFormHeight = this.Height;
+        }
+
+        private void btn_settings_Click(object sender, EventArgs e)
+        {
+            PCRSettingsForm ep = new PCRSettingsForm(m_host);
+            ep.InitEx(m_config);
+            ep.ShowDialog();
+
+            lvExpiringPasswords.Items.Clear();
+            populateExpiringEntries(pwObjectList);
+        }
+
+        private void llbl_Donate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=5F5QB7744AD5G&source=url");
+            llbl_Donate.LinkVisited = true;
         }
     }
 }
