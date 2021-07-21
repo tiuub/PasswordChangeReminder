@@ -16,15 +16,22 @@ namespace PasswordChangeReminder
     public class PasswordChangeReminderExt : Plugin
     {
         public static IPluginHost m_host = null;
+        public static PCRConfig m_config = null;
+
+        private RenewInColumnProv m_prov = null;
+
         private ToolStripMenuItem m_MainMenuItem;
+        private ToolStripMenuItem m_ShowOverviewItem;
+        private ToolStripMenuItem m_SettingsItem;
+        private ToolStripMenuItem m_AboutItem;
+
         private PwEntryForm m_pweForm = null;
         private CheckBox cb_Remind = null;
         private NumericUpDown nup_RemindDays = null;
-        public static PCRConfig m_config = null;
-        private RenewInColumnProv m_prov = null;
+
+        private List<PwDatabase> activatedAfterLoading = new List<PwDatabase>() { };
 
         public static string _EntryStringKey = "_pcr_remindindays";
-        public static string _PluginName = "Password Change Reminder";
 
         internal static IPluginHost Host
         {
@@ -42,11 +49,27 @@ namespace PasswordChangeReminder
 
             GlobalWindowManager.WindowAdded += OnWindowAdded;
 
-            m_MainMenuItem = new ToolStripMenuItem(_PluginName);
-            m_MainMenuItem.Click += MainMenuItem_OnClick;
-            m_MainMenuItem.Image = Properties.Resources.PCR_icon_48_48_png;
+            m_ShowOverviewItem = new ToolStripMenuItem(PCRStatics.OverviewShow);
+            m_ShowOverviewItem.Image = host.MainWindow.ClientIcons.Images[(int)PwIcon.MultiKeys];
+            m_ShowOverviewItem.Click += ShowOverviewItem_OnClick;
+
+            m_SettingsItem = new ToolStripMenuItem(PCRStatics.Settings);
+            m_SettingsItem.Image = host.MainWindow.ClientIcons.Images[(int)PwIcon.Configuration];
+            m_SettingsItem.Click += SettingsItem_OnClick;
+
+            m_AboutItem = new ToolStripMenuItem(PCRStatics.About);
+            m_AboutItem.Image = host.MainWindow.ClientIcons.Images[(int)PwIcon.Info];
+            m_AboutItem.Click += AboutItem_OnClick;
+
+            m_MainMenuItem = new ToolStripMenuItem(PCRStatics.PluginName);
+            m_MainMenuItem.Image = host.MainWindow.ClientIcons.Images[(int)PwIcon.MultiKeys];
+            m_MainMenuItem.DropDownItems.Add(m_ShowOverviewItem);
+            m_MainMenuItem.DropDownItems.Add(m_SettingsItem);
+            m_MainMenuItem.DropDownItems.Add(m_AboutItem);
+
             m_host.MainWindow.ToolsMenu.DropDownItems.Add(m_MainMenuItem);
             m_host.MainWindow.FileOpened += checkOnStartup_onFileOpened;
+            
 
             m_prov = new RenewInColumnProv();
             m_host.ColumnProviderPool.Add(m_prov);
@@ -61,7 +84,8 @@ namespace PasswordChangeReminder
             if (m_host == null) return;
 
             GlobalWindowManager.WindowAdded -= OnWindowAdded;
-            m_host.MainWindow.FileOpened -= checkOnStartup_onFileOpened;
+            m_host.MainWindow.Activated -= checkOnStartup_onFileOpened;
+            m_host.MainWindow.FormLoadPost -= checkOnStartup_onFileOpened;
 
             m_host.ColumnProviderPool.Remove(m_prov);
             m_prov = null;
@@ -73,7 +97,7 @@ namespace PasswordChangeReminder
         {
             get
             {
-                return "https://raw.githubusercontent.com/tiuub/PasswordChangeReminder/master/VERSION";
+                return PCRStatics.PluginUpdateUrl;
             }
         }
 
@@ -94,7 +118,7 @@ namespace PasswordChangeReminder
             cb_Remind.Left = 9;
             cb_Remind.Width = 240;
             cb_Remind.Height = 17;
-            cb_Remind.Text = Properties.strings.pcr_pwentry_cb_remind;
+            cb_Remind.Text = PCRStatics.AddEditFormRemindIn;
             cb_Remind.Name = "pcr_cbRemind";
             cb_Remind.Enabled = true;
             cb_Remind.CheckStateChanged += cbRemind_onCheckStateChanged;
@@ -135,9 +159,9 @@ namespace PasswordChangeReminder
 
         private void checkOnStartup_onFileOpened(object sender, EventArgs e)
         {
-
-            if (m_host != null && m_host.Database != null && m_host.Database.IsOpen && m_config != null && m_config.checkOnStartup)
+            if (m_host != null && m_host.MainWindow.ActiveDatabase != null && m_host.MainWindow.ActiveDatabase.IsOpen && m_config != null && m_config.checkOnStartup && !activatedAfterLoading.Contains(m_host.MainWindow.ActiveDatabase))
             {
+                activatedAfterLoading.Add(m_host.MainWindow.ActiveDatabase);
                 foreach (PwEntry pe in Tools.GetExpiringPasswords(m_host))
                 {
                     if (pe.Strings.Exists(PasswordChangeReminderExt._EntryStringKey))
@@ -150,7 +174,7 @@ namespace PasswordChangeReminder
                         if (iChangeIn <= m_config.checkOnStartupDays)
                         {
                             PCRPasswordsForm ep = new PCRPasswordsForm(m_host);
-                            ep.InitEx(Tools.GetExpiringPasswords(m_host), m_host.Database, m_host.MainWindow.ClientIcons, m_config);
+                            ep.InitEx(Tools.GetExpiringPasswords(m_host), m_host.MainWindow.ActiveDatabase, m_host.MainWindow.ClientIcons, m_config);
                             ep.ShowDialog();
                             break;
                         }
@@ -180,11 +204,24 @@ namespace PasswordChangeReminder
             }
         }
 
-        private void MainMenuItem_OnClick(object sender, EventArgs e)
+        private void ShowOverviewItem_OnClick(object sender, EventArgs e)
         {
-            PCRPasswordsForm ep = new PCRPasswordsForm(m_host);
-            ep.InitEx(Tools.GetExpiringPasswords(m_host), m_host.Database, m_host.MainWindow.ClientIcons, m_config);
-            ep.ShowDialog();
+            PCRPasswordsForm ov = new PCRPasswordsForm(m_host);
+            ov.InitEx(Tools.GetExpiringPasswords(m_host), m_host.MainWindow.ActiveDatabase, m_host.MainWindow.ClientIcons, m_config);
+            ov.ShowDialog();
+        }
+
+        private void SettingsItem_OnClick(object sender, EventArgs e)
+        {
+            PCRSettingsForm s = new PCRSettingsForm(m_host);
+            s.InitEx(m_config);
+            s.ShowDialog();
+        }
+
+        private void AboutItem_OnClick(object sender, EventArgs e)
+        {
+            About a = new About(m_host);
+            a.ShowDialog();
         }
 
         private PwEditMode EditMode()
@@ -205,7 +242,7 @@ namespace PasswordChangeReminder
 
         public sealed class RenewInColumnProv : ColumnProvider
         {
-            private const string RenewInColumnName = "Renew Password in";
+            private const string RenewInColumnName = PCRStatics.ColumnName;
 
             public override string[] ColumnNames
             {
@@ -223,7 +260,7 @@ namespace PasswordChangeReminder
                     
                     if (iChangeIn <= 0)
                     {
-                        return Properties.strings.pcr_today + " (" + iChangeIn.ToString() + " " + Properties.strings.pcr_days + ")";
+                        return string.Format("{0} ({1} {2})", PCRStatics.Today, iChangeIn, PCRStatics.Days.ToLower());
                     }
 
                     return iChangeIn.ToString() + " days";
@@ -241,7 +278,7 @@ namespace PasswordChangeReminder
                 if ((strColumnName == RenewInColumnName) && (pe != null))
                 {
                     PCRPasswordsForm ep = new PCRPasswordsForm(PasswordChangeReminderExt.Host);
-                    ep.InitEx(Tools.GetExpiringPasswords(PasswordChangeReminderExt.Host), PasswordChangeReminderExt.Host.Database, PasswordChangeReminderExt.Host.MainWindow.ClientIcons, PasswordChangeReminderExt.Config);
+                    ep.InitEx(Tools.GetExpiringPasswords(PasswordChangeReminderExt.Host), PasswordChangeReminderExt.Host.MainWindow.ActiveDatabase, PasswordChangeReminderExt.Host.MainWindow.ClientIcons, PasswordChangeReminderExt.Config);
                     ep.ShowDialog();
                 }
             }

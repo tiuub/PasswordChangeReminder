@@ -61,21 +61,63 @@ namespace PasswordChangeReminder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Icon PCR_icon_48_48_ico {
+        internal static System.Drawing.Bitmap date_black {
             get {
-                object obj = ResourceManager.GetObject("PCR_icon_48_48_ico", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
+                object obj = ResourceManager.GetObject("date_black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap PCR_icon_48_48_png {
+        internal static System.Drawing.Bitmap info_white {
             get {
-                object obj = ResourceManager.GetObject("PCR_icon_48_48_png", resourceCulture);
+                object obj = ResourceManager.GetObject("info_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///                                 Apache License
+        ///                           Version 2.0, January 2004
+        ///                        http://www.apache.org/licenses/
+        ///
+        ///   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        ///
+        ///   1. Definitions.
+        ///
+        ///      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+        ///      and distribution as defined by Sections 1 through 9 of this document.
+        ///
+        ///      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+        ///      the copyright owner that  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string MaterialDesignIconsLICENSE {
+            get {
+                return ResourceManager.GetString("MaterialDesignIconsLICENSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap password_white {
+            get {
+                object obj = ResourceManager.GetObject("password_white", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap settings_white {
+            get {
+                object obj = ResourceManager.GetObject("settings_white", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -25,6 +25,7 @@ namespace PasswordChangeReminder
         private const String XMLPATH_PCR_PASSWORDS_FORM_GREAT_COLOR = XMLPATH_PLUGINNAME + ".PCRPasswordsFormGreatColor";
         private const String XMLPATH_PCR_PASSWORDS_FORM_TENTATIVE_COLOR = XMLPATH_PLUGINNAME + ".PCRPasswordsFormTentativeColor";
         private const String XMLPATH_PCR_PASSWORDS_FORM_CRITICAL_COLOR = XMLPATH_PLUGINNAME + ".PCRPasswordsFormCriticalColor";
+        private const String XMLPATH_PCR_PASSWORDS_FORM_DEFAULT_COLOR = XMLPATH_PLUGINNAME + ".PCRPasswordsFormDefaultColor";
         private const String XMLPATH_PCR_PASSWORDS_FORM_TENTATIVE_STATE = XMLPATH_PLUGINNAME + ".PCRPasswordsFormTentativeState";
         private const String XMLPATH_PCR_PASSWORDS_FORM_CRITICAL_STATE = XMLPATH_PLUGINNAME + ".PCRPasswordsFormCriticalState";
 
@@ -97,6 +98,18 @@ namespace PasswordChangeReminder
             set
             {
                 m_config.SetLong(XMLPATH_PCR_PASSWORDS_FORM_CRITICAL_COLOR, value.ToArgb()); ;
+            }
+        }
+
+        public Color pcrPasswordsFormDefaultColor
+        {
+            get
+            {
+                return Color.FromArgb((int)m_config.GetLong(XMLPATH_PCR_PASSWORDS_FORM_DEFAULT_COLOR, Color.LightGray.ToArgb()));
+            }
+            set
+            {
+                m_config.SetLong(XMLPATH_PCR_PASSWORDS_FORM_DEFAULT_COLOR, value.ToArgb()); ;
             }
         }
 
