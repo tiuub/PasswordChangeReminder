@@ -12,7 +12,18 @@ PasswordChangeReminder is a plugin for [KeePass](http://keepass.info). It will r
 - Download the latest release [here](https://github.com/tiuub/PasswordChangeReminder/releases/latest)
 - Copy the PasswordChangeReminder.plgx in the KeePass plugins directory and restart the application.
 
+#### Chocolatey 📦 
+Or you can [use Chocolatey to install](https://community.chocolatey.org/packages/keepass-plugin-passwordchangereminder#install) it in a more automated manner:
 
+```
+choco install keepass-plugin-passwordchangereminder
+```
+
+To [upgrade KeePass Plugin PasswordChangeReminder](https://community.chocolatey.org/packages/keepass-plugin-passwordchangereminder#upgrade) to the [latest release version](https://community.chocolatey.org/packages/keepass-plugin-passwordchangereminder#versionhistory) for enjoying the newest features, run the following command from the command line or from PowerShell:
+
+```
+choco upgrade keepass-plugin-passwordchangereminder
+```
 
 ## Usage
 
